@@ -1,0 +1,195 @@
+CPAAAA.HLP                                               23 April 1991
+
+
+Version 4.11 of Kermit-80 is a development of the previous release 4.09,
+changed to add more features.  Much of the system-dependent code is as it
+was in Version 4.09. The names of the files for Version 4.11 follow a fixed
+convention. They all have the form
+
+     CPaxxx.bbb
+
+In these names:
+
+     "a" is one of
+
+          A for general information
+          K for documentation and beware files
+          S for system independent files
+          X for system-dependent source files
+          V for system-dependent hex files
+
+     "xxx" is used to identify unique files used
+
+     "bbb" is the file extention, usually one of:
+
+          ASM for source files
+          HEX for  pre-assembled modules or completeprograms  (eg 
+               LASM.HEX is the assembler)
+          HLP for help files
+          BWR for beware files
+          ANN for notes
+          TXT for pure text files
+          DOC as for TXT
+          MSS SCRIBE sources files (for document files.)
+
+CPKFET.* is a bootstrapping procedure that can be used if you have no other
+way to download the new files.
+
+Version 4.11 may be assembled and linked with LASM and MLOAD, respectively,
+or it may be assembled with the M80 assembler.
+
+It is also possible to assemble the source files on an IBM PC or clone using
+the Z80MU CP/M V2.2 and Z80 emulator, itself running the LASM or M80
+assembler.  (Using Z80MU is very useful if your target systems does not have
+enough disk space for all the source files.)
+
+CP/M Kermit Version 4.11 is built from the sources in the same manner as was
+CP/M Kermit Version 4.09.  LASM and MLOAD may be found in the Kermit
+distribution.
+
+The M80 assembler is a Microsoft product, and you have to pay good money for
+it.
+
+**Note** The overlay address has been moved to 7000H to make room for the
+added code in this version of CP/M Kermit.
+
+Currently, the code for a number of systems has been upgraded from version
+4.09.  The particular system is indicated in filenames by the "xxx" part:
+codes currently in use are:
+
+APP  Apple II with Z80 card
+          - with Micromodem in slot 2
+          - with 6551 and 6850 UARTs
+          - with CP Multifunction card
+
+BBI  Kaypro, Bigboard, Xerox 820 and Ampro Little Board systems
+
+CIF  Cifer 1886 using the VL:  or AL ports as TTY:Line. (Use &set 
+     to  set ttyi:  and ttyo:  to the VL:  or AL:port)  Choice of 
+     CP/M V2.2 or 3.0 ("PLUS")
+
+HEA  Heath systms (Heath 8 with quad IO interface board)
+     Telcon ZORBA
+
+PCW  Amstrad PCW 8256 and 8152 as well as CP/M-plus on CPC 6128
+
+NOR  Northstar Advantage
+     Northstar Horizon (Several: labels in CPXTYP are:
+          BASICNS
+          NORTHS
+          HORIZON
+     Comart  Communicator.  This  is included as it  is  somewhat 
+     similar to the Northstar Horizon.
+
+TOR  Superbrain  (Main and Aux port versions..  assumes MicroMods 
+     add-ons)
+     Torch systems (runs ok on Unicorn-5 under CP/M)
+     Ithaca Intersystems series machines using the VIO card. (PCI 
+     2651 USARTS)
+     NCR DecisionMate V systems
+
+as well as another half dozen single system only family files.  The total
+list of systems supported so far is:
+
+
+System supported in CP/M-80 Kermit V4.11 (and growing!)
+Label   .HEX File   For system
+============================================================================
+ACCESS  CPVACC       Access Matrix
+ADVANT  CPVADV       Northstar Advantage
+AMPRO	CPVAMP	     Ampro Little Board (terminal required)
+AP6551  CPVAPL       Apple II, Z80 Softcard, 6551 ACIA in serial Interface
+AP6850  CPVA65       Apple II, Z80 Softcard, 6850 ACIA in Serial Interface
+APMMDM  CPVAPM       Apple II, Z80 Softcard, Micromodem II in slot 2
+APCPS   CPVCPS       Apple II, Z80 Softcard, with CPS multifunction card
+BASICNS CPVBNS       Northstar Horizon (terminal required)
+BBC     CPVBBC       Acorn "BBC" computer with Acorn Z80 second processor
+BBII    CPVBB2       BigBoard II (terminal required)
+MBEE	CPVBEE	     Microbee Systems Ltd Microbee (56K, 64K, 128K & 256K)
+BRAINM  CPVBRM       Intertec Superbrain using the main port
+BRAINA  CPVBRA       Intertec Superbrain using the Aux port
+CIFER2  CPVCIF       Cifer 1886 using the VL: Serial port and CP/M V2.2
+CIFER3  CPVCI3       Cifer 1886 using the VL: Serial port and CP/M V3.0
+CIFER2  CPVCA2       Cifer 1886 using the AUX: Serial port and CP/M V2.2
+CIFER3  CPVCA3       Cifer 1886 using the AUX: Serial port and CP/M V3.0
+CMEMCO  CPVCRO       Cromemco with TU-ART card. Terminal required)
+COMART  CPVCOM       Comart Communicator (terminal required)
+COMPRO  CPVPRO       Compupro with Interfacer 4 (or 3).  Terminal required.
+CPC     CPVCPC       Amstrad CPC 664 and 6128 and CP/M 3
+CPM3    CPVCP3       "Generic": CP/M 3.0 (CP/M Plus) systems (terminal req'd)
+CPT85XX CPVCPT       CPT-85xx wordprocessor with CP/M
+DELPHI  CPVDEL       Digicomp Delphi 100 (terminal required)
+DISC    CPVDIS       Action Computer Enterprises "Discovery" (terminal req'd)
+DMII    CPVDM2       DECmate II with CP/M option
+GENER   CPVGEN       "Generic": CPM 2.2 systems with IOBYTE (terminal req'd)
+GENIE   CPVGNI       Video Genie
+H8QUAD  CPVH8Q       Heath-8 with Quad 8 i/o board
+HEATH   CPVH89       Heath/Zenith H89
+HORIZON CPVHOR       Northstar Horizon (terminal required)
+HP125	CPVHP1	     Hewlett-Packard HP-125 Business Assistant
+KPII    CPVKPR       Kaypro-II (and 4; probably supports all Kaypro systems)
+LOBO    CPVLBO       Lobo Max-80
+M2215   CPVMRL       British Telecom Merlin/Rair Black Box (terminal required)
+MDI     CPVMDI       Morrow Decision I (terminal required)
+MIKKO   CPVMIK       MikroMikko
+MMATE   CPVMM        PMC 101 Micromate (terminal required)
+MMDI    CPVUD        Morrow Micro Decision I (terminal required)
+NCRDMV  CPVDMV       NCR Decision Mate V.  (Terminal required?)
+NORTHS  CPVNS        Northstar Horizon with HSIO-4 card (terminal req'd)
+OSBRN1  CPVOSB       Osborne 1
+OSI     CPVOSI       Ohio Scientific
+PCI2651 CPVPCI       Ithaca Intersystems with VI0 card (terminal required)
+PCW     CPVPCW       Amstrad PCW 8256/8512 with serial interface
+PX8     CPVPX8       Epson PX-8
+RM380ZM CPVRMM       Research Machines 380Z with MDS (5.25" discs)
+RM380ZF CPVRMF       Research Machines 380Z with FDS (8" discs)
+ROBIN   CPVROB       DEC VT180
+S1008   CPVUSM       US Microsales S-100-8 (terminal required)
+SANYO   CPVSAN       Sanyo MBC-1100
+SB6     CPVSB6       Micromint SB-180 with 6Mhz CPU (terminal required)
+SB9     CPVSB9       Micromint SB-180 with 9Mhz CPU (terminal required)
+SCNTPR  CPVSCN       Screentyper
+TELCON  CPVTEL       TELCON Zorba portable
+TELETEK CPVTET       Teletek Systemaster (terminal required)
+TORCH   CPVTRC       Torch computers BBC-B with Z80 second processors
+TRS80LB CPVTLB       TRS-80 model II with Lifeboat 2.25C CP/M Display
+TRS80PT CPVTPT       TRS-80 model II with Pickles + Trout CP/M Display
+TRSM4   CPVTM4       TRS-80 model IV
+VECTOR  CPVVEC       Vector Graphics
+XER820  CPVXER       Xerox 820
+Z100    CPVZ00       Z-100 under CP/M-85
+Z80MU   CPVZ80       Z80MU development system on a PC
+
+
+Terminals supported in CP/M-80 Kermit V4.11 (and growing!)
+Label        Terminal
+========================================================================
+CRT          Does not do cursor addressing
+ADM3A        Lear Seigler ADM 3A
+ADM22        Lear Seigler ADM 22
+AM230        Ampro 230
+H1500        Hazeltine 1500
+SMRTVD       Netronics Smartvid
+SOROQ        Soroq IQ-120
+TVI912       Televideo 912
+TVI925       Televideo 925 or Freedom 100
+VT52         Dec VT52 or equivalent (H19)
+VT100        Dec VT100 or equivalent
+WYSE         Wyse 100
+
+More systems and families are always coming in, so this list and the source
+files are all likely to change sometime in the near future.
+
+Any comment, suggestions etc send them in.  I will not guarentee that your
+suggestions will be implemented, but maybe....
+
+Cheers ES 73's/88's, Mike Freeman K7UIJ
+Bonneville Power Administration
+P.O. Box 491
+Vancouver, WA 98666
+(206)690-2307
+301 N.E. 107th Street
+Vancouver, WA 98685 USA
+(206)574-8221
+
+E-Mail:  freeman@watsun.cc.columbia.edu on Internet

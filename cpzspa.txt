@@ -1,0 +1,92 @@
+.pl66
+                      Tabspace utility for 
+               CP/M-80 Kermit (Kermit-80) support.
+
+I have written this utilty simply to help me.  No other excuses.
+
+I am forever getting updates or new systems to add to the CP/M-80 
+version of Kermit (Kermit-80) from folk who send me these updates 
+via  Electronic  Mail.   I  am thankful that it is already  in  a 
+machine readable form.
+
+However,  our  Mutton-head  mainframe substitutes a single  space 
+character  for every tab character it receives,  so a lot of  the 
+submissions  need  considerable massaging before I  can  actually 
+merge these additions to the rest of Kermit-80.
+
+Therefore,  I issued Kermit-80 with all tabs replaced by  spaces, 
+in  the  hope that any further doantions have spaces  instead  of 
+tabs.   Unfortunately,  this  does  not  work  in  practice,  and 
+everyone is complaining about the size of the source files (often 
+as  much  as  30% larger as a single tab character is now  up  to 
+eight space characters!)
+
+So  I wrote this program in the hope that people submitting stuff 
+to  me run their sources through this de-tabber to make  my  life 
+easier.
+
+As  a bonus,  TABSAPACE will do the reverse,  and replace  spaces 
+with tabs.  With a couple of exceptions...  (See below)
+
+To  run  the  program,  type TABSPACE and wait  for  the  sign-on 
+message   ("Tabspace loaded,  Version 1 22-Jan-87"   for the time 
+being).  Tabspace will ask for the filename to be "massaged", and 
+whether  you  want  to expand or compress  files  (ie  substitute 
+spaces for tabs, or tabs for spaces respectively).  
+
+Once  started,  it will plough through the file specified (if  it 
+exists)  and apply the tabs/spaces replacement as  required.   It 
+will also strip out any parity bits.
+
+Tabspace  actually opens two files when it works:  one input file 
+of  the  type <filename>.<extention> as specified  by  you.   The 
+second is the same <filename> but with a $$$ extention.
+
+Once  the  file  has been massaged,  the original  file  will  be 
+deleted,  and the .$$$ file renamed to your original file.   This 
+should  be relatively safe,  as you will not get to the stage  of 
+delete  and  rename  if  you  have disk  space  or  file  closing 
+problem.   However, I suggest you try applying Tabspace to COPIES 
+of your software!
+
+Couple of other points:
+Tabspace   uses  memory  to  buffer  several  logical  128   byte 
+"sectors",  both on read and writing.   An equate for MAXRAM sets 
+the maximum amount of memory available to Tabspace after CP/M and 
+Tabspace itself have nabbed their memory,  and is initally set to 
+16  Kbytes.   (I reasoned that if you are going to run  Kermit-80 
+version  4.08  or later you should have at least this  amount  of 
+free  memory!)  If you have more memory,  you can adjust this  to 
+some larger value,  say 52 for a 62k system (ie 62K - 8k (CP/M) - 
+2k (Tabspace) = 52k)
+
+I used the Public Domain assembler LASM to assemble  Tabspace;  I 
+have no idea if any other assembles will work.   Anyway,  LASM is 
+the ONLY assembler now used for Kermit-80 assembly.
+
+Tabspace  will expand tabs after a semicolon in a comment  field, 
+but will not replace tabs for multiple spaces after a  semicolon.  
+I ran into som real problems early on, and decided that spaces in 
+comment fields would be ok, so I left it in.
+
+Any  comments  or  contributions for  Tabspace  and/or  Kermit-80 
+please send them to me (with tabs expanded!) as:
+
+
+OBSchou @ UK.AC.LOUGHBOROUGH.MULTICS                   or
+
+Kermit @ UK.AC.LOUGHBOROUGH.MULTICS                    or
+
+Bertil Schou,
+The Computer Centre,
+Loughborough Universirty of Technology,
+Loughborough,
+Leics. LE11 3TU                                        or
+
++ 509 -222313 (Direct Dial)
+
+
+
+Many thanks for your co-operation,  
+
+Bertil Schou.

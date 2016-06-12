@@ -1,0 +1,138 @@
+                                 MLOAD
+
+Description:
+
+     MLOAD is a transient command used to convert a "HEX" file (the
+output of an assembler) into an executable "COM" file.
+
+     In its simplest form, MLOAD takes a program that is in valid Intel
+hexadecimal format machine code and converts it into a command file that
+can be executed.  The file becomes filename.COM (the hexadecimal file is
+filename.HEX).  This form may be used as a replacement to the Digital
+Research "LOAD" command.
+
+     The program may also be used to overlay portions of a "COM" file
+with patches assembled to a new "HEX" file.
+
+Syntax:
+
+     mload [<outnam=>][<file1.type>,]<file2>[,<file3...>] [bias]
+
+     <outnam> is the optional output file name.
+
+     <file1.type> is an optional non-HEX file to be patched by
+     subsequently named HEX files.  Specifying the filetype enables this
+     function.
+
+     <file2> specifies the file to be loaded, unless a file1.type has
+     been specified.  In that case, it specifies a HEX file to load.
+
+     <file3> specifies HEX file(s) to load.
+
+     <bias> is the offset within the saved image to apply when loading
+     the file.
+
+          MLOAD with no arguments prints a small help message.  This
+     message is also printed whenever a command line syntax error
+     occurs.
+
+          ZCPR-style du specifications are fully supported, for both
+     input and output files.  The following command lines are
+     permissible:
+
+         b3>mload a4:myfile.com=0:bigfil,b6:patch1,c9:patch2
+         a6>mload b5:=c3:mdm717.com,mdmpatch
+
+          Only the optional drive and user spec and the primary filename
+     may be specified.  The output filetype is derived exclusively from
+     the 3-byte string at 103h within MLOAD.
+
+          If no output filename is specified, it will be derived from
+     the first input filename, with filetype of "COM", if not otherwise
+     specified (this default filetype may be patched directly into MLOAD
+     via DDT or with MLOAD itself, using a patch file - its location is
+     at 103H in MLOAD.COM).  Note that a command line of the form
+     "C:=<FILENAME>" will place the output file on the "C" drive with
+     the same primary filename as the input file.
+
+         This feature obviating any need to use DDT.  The first (and
+     only the first) filespec (after the "=", if used) may be non-HEX
+     and the filetype must be specified.  Examples:
+
+         1.  "mload MYPROG" loads MYPROG.HEX and writes the output to
+     MYPROG.COM.
+
+         2.  "mload ws.com,wspatch" loads WS.COM, overlays it with
+     WSPATCH.HEX, and writes the output to WS.COM.
+
+         3.  "mload MEXTEST=MEX114.COM,MXO-US13" loads MEX114.COM,
+     overlays it with MXO-US13.HEX, and writes the output file to
+     MEXTEST.COM.  Note that this is the recommended technique because
+     it preserves the original file!
+
+         4.  "mload ws.ovr,ovrpatch" loads WS.OVR and patches it with
+     "OVRPATCH.HEX".
+
+          Filenames may contain drive/user specs, and must not contain
+     wildcards.  Input filenames must be separated by comas, and a
+     space is required between the last filename and the optional bias.
+
+     A load information summary is printed at the successful conclusion
+of the load.  Any errors in loading will generally include the name of
+the file in question.
+
+     This program is a replacement for the CP/M "LOAD" program.  Why
+replace "LOAD"?  well...  LOAD.COM has a few deficiencies.  For example,
+if the hex file's origin is above 100h, LOAD.COM prepends blank space
+to the output file to insure it will work as a CP/M transient.  It
+doesn't care if the file is not intended as a CP/M transient and it also
+doesn't like hex records with mixed load addresses.  For example, one
+that loads below a previous record; which is a perfectly legitimate
+happenstance.  Also, LOAD.COM can load only one program at a time, and
+has no provision for a load bias in the command specification.  Finally,
+there is no provision for user specification of the output file name.
+
+     In its simplest form, MLOAD's syntax is identical to LOAD.COM.
+There should be no problem in learning to use the new program.  The only
+significant difference here is that, under LOAD.COM, all files are
+output starting at 100h, even if they originate elsewhere.  MLOAD
+outputs starting at the hex file origin (actually, the first hex record
+specifies the output load address).  The bias option may be used to
+override this.
+
+     An example should clarify this.  Suppose you have a file that loads
+at 1000h.  LOAD.COM would save an output file that begins at 100h and
+loads past 1000h (to wherever the program ends).  MLOAD will save an
+output file starting from 1000h only.  If, for some reason, you need the
+file to start at 100h in spite of its 1000h origin (I can think of
+several circumstances where this would be necessary), you'd have to
+specify a bias to MLOAD.  Using this example, "MLOAD MYFILE 0F00"
+would do.
+
+     Note that this program re-initializes itself each time it is run.
+If your system supports a direct branch to the TPA (via a zero-length
+.COM file, or the ZCPR "GO" command), you may safely re-execute MLOAD.
+
+Error Messages:
+
+        Command line syntax error
+                Error in command line, re-enter and try again.
+        Ambiguous file name: <filename.ext> not allowed.
+                Ambiguous files are not allowed.
+        File <filename.ext> not found.
+                Input file could not be found, check spelling and try again.
+        Disk full.
+                No room on disk for output file.
+        Directory full.
+                No room in directory for output file.
+        Premature end-of-file in <filename.ext>
+                Error in input file, correct error, and try again.
+        Checksum error in <filename.ext>
+                Error in input file, correct error, and try again.
+        Can't close <filename.ext>
+                Problem closing file, disk may be in Read/Only status.
+        Memory full while loading <filename.ext>
+                Error in input file, correct error, and try again.
+        Format error in file <filename.ext>
+                Error in input file, correct error, and try again.
+        Writing <filename.ext>, nothing loaded
