@@ -1214,7 +1214,7 @@ statim:	lxi	d,timmsg	;[jd]
 ;       Show internal versions (edit strings)
 shover:	call	cfmcmd
 	call	prcrlf
-	lxi	d,version	;[MF]Point to Kermit version
+	lxi	d,kermver	;[MF]Point to Kermit version
 	call	prtstr		;[MF]and show it
 	lxi	d,modmsg	;[MF]Continue the message
 	call	prtstr		;[MF]...

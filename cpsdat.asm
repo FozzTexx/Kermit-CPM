@@ -83,7 +83,7 @@ datver:	db	'CPSDAT.ASM (19)  29-Mar-1991$'
 
 ;
 
-version:db	'Kermit-80 v4.'
+kermver:db	'Kermit-80 v4.'
 	db	(verno/10) + '0'        ; tenth's digit of version number
 	db	(verno MOD 10) + '0'    ; hundredth's digit
 IF revno			;[MF]If a revision level,

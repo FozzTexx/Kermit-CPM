@@ -266,7 +266,7 @@ start:	lxi	h,0		; Clear out hl pair
 	dad	sp		; and fetch the system stack pointer
 	shld	oldsp		; and save for later restoral
 	lxi	sp,stack	; move in our own stack.
-	lxi	d,version	; print Kermit version
+	lxi	d,kermver	; print Kermit version
 	call	prtstx		;  before we do too much (Use fudged prtstr)
 	mvi	c,rddrv		;Get our logged in drive
 	call	BDOS

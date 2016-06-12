@@ -1122,7 +1122,7 @@ err3a:	call	prtstr		;Print error message
 ;       Set up for file transfer.
 ;       called by read, send.
 
-init:	lxi	d,version	; point at Kermit's version string
+init:	lxi	d,kermver	; point at Kermit's version string
 	lda	quietd		; a quiet display?
 	ana	a
 	jnz	init1		; so dont say a thing
