@@ -311,6 +311,7 @@ disc	EQU	FALSE		; Action Computer Enterprises "Discovery"
 genie	EQU	FALSE		;Eaca Genie III
 h8quad	EQU	FALSE		;[24] Entry for heath-8.  NOT same as H-89
 heath   EQU     FALSE		;For Heath/Zenith H89.
+jair    EQU     FALSE           ;For JAIR 8080 (terminal required)
 kpII	EQU	FALSE		;Kaypro-II
 horizon	EQU	FALSE		;[10] North Star Horizon (mother-board)
 				; (terminal required)
@@ -415,9 +416,9 @@ IF brain OR vector OR sanyo or compro
 inout	SET	TRUE		;Short conditional for above
 ENDIF;brain OR vector OR sanyo OR compro
 
-IF heath OR h8quad OR z100 OR trs80 OR telcon OR bbI
+IF heath OR h8quad OR z100 OR trs80 OR telcon OR bbI OR jair
 inout	SET	TRUE		;Short conditional for above
-ENDIF;heath OR h8quad OR z100 OR trs80 OR telcon OR bbI
+ENDIF;heath OR h8quad OR z100 OR trs80 OR telcon OR bbI OR jair
 
 IF bbII	OR mmdI	OR mdI OR delphi OR cpt85xx OR norths	;running out of room
 inout	SET	TRUE		;Short conditional for above
@@ -466,10 +467,10 @@ IF z80mu
 cpuspd	SET	2		; a PC is about 200khz Z80 equivalent
 ENDIF; z80mu
 
-IF apple OR cpt85xx OR px8 OR heath OR h8quad ;[9] [12] What rate is heath?
+IF apple OR cpt85xx OR px8 OR heath OR h8quad OR jair ;[9] [12] What rate is heath?
 cpuspd	SET	20		; Apple Softcard, CPT-85xx: 2.0 MHz
 				; ('cause of integral video?)
-ENDIF; apple OR cpt85xx OR px8 OR heath OR h8quad [12]
+ENDIF; apple OR cpt85xx OR px8 OR heath OR h8quad OR jair [12]
 
 IF kpII	OR xer820 OR scntpr OR osbrn1 ;[9] What speed is scntpr??
 cpuspd	SET	25		; original Kaypro II,Xerox 820: 2.5 MHz
@@ -570,7 +571,7 @@ bbifam	SET	TRUE		; The Bigboard, Kaypro, Xerox and Ampro family
 .printx * bbifam set TRUE *
 ENDIF	;(kpII or xer820 OR bbII OR ampro)
 
-IF (heath OR h8quad OR telcon OR z100 OR scntpr)
+IF (heath OR h8quad OR telcon OR z100 OR scntpr OR jair)
 heafam	SET	TRUE		; Doing Heath, z100, telcon, or screentyper
 .printx * heafam set TRUE *
 ENDIF   ;(heath OR h8quad OR telcon OR z100 OR scntpr)

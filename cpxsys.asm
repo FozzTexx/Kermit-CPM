@@ -440,9 +440,9 @@ vtval	EQU	0		;  we don't need VT52 emulation
 ENDIF;vt52
 
 ; If none of the above, default to VT52-EMULATION ON.
-IF NOT (crt OR vt52 OR robin OR dmII OR vt100 OR hp125);[MF]
+IF NOT (crt OR vt52 OR robin OR dmII OR vt100 OR hp125 OR tvi912);[MF]
 vtval	EQU	1
-ENDIF;NOT (crt OR vt52 OR robin OR dmII OR vt100 OR hp125)[MF]
+ENDIF;NOT (crt OR vt52 OR robin OR dmII OR vt100 OR hp125 OR tvi912)[MF]
 
 
 ;	sysxin	- system dependent initialisation code, called from SYSINIT

@@ -26,6 +26,9 @@ ENDIF	;NOT lasm
 ;
 ; revision history:
 ;
+; Edit 5, 21-Aug-2017 by Chris Osborn, fozztexx@fozztexx.com
+;       Added support for JAIR 8080 SBC designed by Josh Bensadon.
+;
 ; Edit 4, 31-Aug-1989 by Mike Freeman, 301 N.E. 107th Street; Vancouver wa
 ;	98685 USA; Telephone (206)574-8221:  Added Baud-rate Selection and
 ;	Break-sending ability for the Telcon Zorba portable.
@@ -100,6 +103,10 @@ ENDIF
 IF scntpr
 .printx * Assembling KERMIT-80 for the OEM ScreenTyper *
 ENDIF
+
+IF jair
+.printx * Assembling KERMIT-80 for the JAIR 8080 *
+ENDIF
 ;
 
 ;
@@ -144,7 +151,12 @@ ENDIF	;h8quad
 IF scntpr
 mnport  EQU     8       ;Modem data port
 ENDIF ; scntpr
-IF heath OR scntpr
+
+IF jair
+mnport  EQU     28H    ;Modem data port
+ENDIF ; jair
+
+IF heath OR scntpr OR jair
 
 ;       Definitions for the 8250 ACE
 
@@ -172,8 +184,15 @@ acethe  EQU     00100000b ; transmitter holding register empty
 mnprts  EQU     mnport+acelsr   ;Modem status port
 output  EQU     acethe  ;Transmitter empty
 input   EQU     acedr   ;Input data available
+ENDIF;heath OR scntpr OR jair
+
+IF heath OR scntpr
 z80     EQU     TRUE    ;H89 uses the Z80
-ENDIF;heath OR scntpr
+ENDIF;heath OR scntpr OR jair
+
+IF jair
+z80     EQU     FALSE   ;JAIR is an 8080
+ENDIF;jair
 
 IF z100
 mnport  EQU     0ECH    ;Modem data port
@@ -223,7 +242,7 @@ family: db      'CPXHEA.ASM (4)  31-Aug-1989$' ; Used for family versions....
 
 ;
 sysxin:		; continuation of initialisation code
-IF heath OR scntpr
+IF heath OR scntpr OR jair
 ;
 ;       System dependent startup for H89 and OEM ScreenTyper
 ;
@@ -273,7 +292,7 @@ mdmonl:
         ret
 
 iersav: ds      1
-ENDIF;heath OR scntpr
+ENDIF;heath OR scntpr OR jair
 
 IF h8quad
 h8init: lxi	d,180h		; [2] set up for 300 baud
@@ -322,10 +341,10 @@ syscls:
 ;       system-independent escape sequences.
 ;
 sysinh:
-IF heath OR scntpr  OR telcon;[4]
+IF heath OR scntpr OR telcon OR jair;[4]
         lxi     d,inhlps        ; we got options...
         call    prtstr          ; print them.
-ENDIF;heath OR scntpr  OR telcon
+ENDIF;heath OR scntpr OR telcon OR jair
 
         ret
 
@@ -333,13 +352,13 @@ ENDIF;heath OR scntpr  OR telcon
 ;additional, system-dependent help for transparent mode
 ; (two-character escape sequences)
 inhlps:
-IF heath OR scntpr  OR telcon;[4]
+IF heath OR scntpr OR telcon OR jair;[4]
         db      cr,lf,'B  Transmit a BREAK'
-ENDIF;heath OR scntpr  OR telcon
+ENDIF;heath OR scntpr OR telcon OR jair
 
-IF heath OR scntpr 
+IF heath OR scntpr OR jair
         db      cr,lf,'D  Drop the line'
-ENDIF;heath OR scntpr 
+ENDIF;heath OR scntpr OR jair
 
         db      '$'                     ;[hh] table terminator
 
@@ -352,7 +371,7 @@ ENDIF;heath OR scntpr
 ;       skip:   sequence was not recognized
 sysint: ani     137O            ; convert lower case to upper, for testing...
 
-IF heath OR scntpr
+IF heath OR scntpr OR jair
         cpi     'D'             ; drop line?
         jnz     intc00          ; no:  try next function character
 
@@ -366,17 +385,17 @@ mdmdrp: in      mnport+acemcr   ; (we also get here from sysbye)
         out     mnport+acemcr   ;      and then restore it
         ret
 intc00:
-ENDIF;heath OR scntpr
+ENDIF;heath OR scntpr OR jair
 
-IF heath OR scntpr OR telcon;[4]
+IF heath OR scntpr OR telcon OR jair;[4]
         cpi     'B'             ; send break?
         jz      sendbr          ; yes, go do it.  return nonskip when through.
-ENDIF;heath OR scntpr OR telcon
+ENDIF;heath OR scntpr OR telcon OR jair
       jmp     rskp            ; take skip return - command not recognized.
 
 
 ;
-IF heath OR scntpr
+IF heath OR scntpr OR jair
 ;
 ;       Send BREAK on H89 or ScreenTyper
 ;
@@ -390,7 +409,7 @@ sendbr: in      mnport+acelcr
         out     mnport+acelcr   ; and clear ACE break condition
         ret
 
-ENDIF;heath OR scntpr
+ENDIF;heath OR scntpr OR jair
 ;
 IF telcon			;[4]
 ;
@@ -446,9 +465,9 @@ prtflt:
 ; system-dependent processing for BYE command.
 ;  for apmmdm, heath, scntpr, and lobo, hang up the phone.
 sysbye:
-IF heath OR scntpr
+IF heath OR scntpr OR jair
         call    mdmdrp          ;  Sleazy but effective
-ENDIF;heath OR scntpr
+ENDIF;heath OR scntpr OR jair
 
         ret
 ;
@@ -457,7 +476,7 @@ ENDIF;heath OR scntpr
 ;       value is also stored in 'speed'.
 sysspd:
 
-IF heath OR scntpr
+IF heath OR scntpr OR jair
 ;
 ;       Set speed for H89
 ;
@@ -473,7 +492,7 @@ IF heath OR scntpr
         ani     0FFH-acedla
         out     mnport+acelcr   ; de-access the ACE's divisor latch
         call    mdmonl          ; and put the ACE back on line
-ENDIF;heath OR scntpr
+ENDIF;heath OR scntpr OR jair
 
 IF h8quad	;[2][obs] A bit of guesswork this.  Enter with date in de
 	call	h8baud		; [2] routine is in initialisation bit
@@ -501,7 +520,7 @@ ENDIF ;telcon
 ;       db      string length,string,divisor (2 identical bytes or 1 word)
 ; [Toad Hall]
 
-IF heath
+IF heath OR jair
 ;
 ;       Speed selection table for H89  (OK, so I got a little carried away...)
 ;
@@ -549,7 +568,7 @@ spdtbl: db      19              ; 19 entries
 sphtbl: db      cr,lf
         db      '    50    75   110 134.5   200   300   450   600   900  1200'
         db      cr,lf,'  1800  2400  3600  4800  7200  9600 19200 38400 56000$'
-ENDIF;heath
+ENDIF;heath OR jair
 
 IF h8quad
 spdtbl:	db	6	;[2] 6 entries
@@ -810,6 +829,8 @@ IF NOT iobyt
 ENDIF;NOT iobyt
 outlp1: pop     d               ; restore saved register pair
         ret
+
+IF NOT jair
 ;
 ;
 ;       Screen manipulation routines
@@ -832,6 +853,7 @@ csrpos: push    b               ; save coordinates
         adi     (' '-1)         ; space is column one
         mov     e,a
         jmp     outcon          ; output it and return
+ENDIF;jair
 
 ;
 ; delchr - make delete look like a backspace.  Unless delete is a printing
@@ -878,6 +900,10 @@ IF scntpr
 sysver: db      'OEM ScreenTyper: 4MHz Z80 running OS/M$'
 ENDIF;scntpr
 
+IF jair
+sysver: db      'JAIR 8080$'
+ENDIF;jair
+
 IF heath OR h8quad OR z100 OR telcon
 outlin: db      esc,'H',esc,'J',cr,lf,tab,tab,'$'
 erascr: db      esc,'H',esc,'J$'        ;Clear screen and go home.
@@ -917,5 +943,12 @@ tj:     db      esc,'%$',0              ;Clear to end of screen.
 tk:     db      esc,'*$',0              ;Clear to end of line.
 ENDIF;scntpr
 
+IF NOT jair
 ovlend  EQU     $       ; End of overlay
+ENDIF;jair
+
+IF lasm AND jair
+LINK CPXVDU.ASM
+ENDIF;lasm AND jair
+
 	END		; Phew ... [majoc 870305]
