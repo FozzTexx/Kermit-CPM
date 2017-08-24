@@ -238,7 +238,7 @@ ENDIF;scntpr
 ;       the juge CPXSYS.ASM file, in which case we will never get here.  
 ;       Just a Dollar, but put a sting in for a family of machines.
 ;
-family: db      'CPXHEA.ASM (4)  31-Aug-1989$' ; Used for family versions....
+family: db      'CPXHEA.ASM (4)  21-Aug-2017$' ; Used for family versions....
 
 ;
 sysxin:		; continuation of initialisation code
