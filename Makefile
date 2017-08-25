@@ -2,7 +2,8 @@ AS=lasm
 KERMITASM=cpscmd.asm cpscpm.asm cpsdef.asm cpsmit.asm cpspk2.asm	\
 	  cpsser.asm cpsutl.asm cpscom.asm cpsdat.asm cpsker.asm	\
 	  cpspk1.asm cpsrem.asm cpstt.asm cpswld.asm
-SYSTEMASM=cpxlnk.asm cpxtyp.asm cpxlnk.asm cpxcom.asm cpxswt.asm
+SYSTEMASM=cpxlnk.asm cpxtyp.asm cpxlnk.asm cpxcom.asm cpxswt.asm	\
+	  cpsdef.asm cpxvdu.asm
 
 cpsker.hex: $(KERMITASM)
 	$(AS) --listing cpsker.asm

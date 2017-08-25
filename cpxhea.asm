@@ -275,6 +275,9 @@ mdmofl:
         out     mnport+aceier   ; and disable ACE interrupts
         in      mnport+acemcr   ; now put the ACE in loopback mode
         ori     aceloo
+IF jair;Don't know why but without the NOP the OUT hangs
+	nop
+ENDIF;jair
         out     mnport+acemcr
         ret
 
