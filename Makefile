@@ -15,5 +15,6 @@ cpvtpt.hex: $(SYSTEMASM)
 
 cpvjai.hex: $(SYSTEMASM) cpxhea.asm
 	sed -r -e 's/(jair[ \t]+equ[ \t]+)false(.*)/\1TRUE\2/i' -e 's/(crt[ \t]+equ[ \t]+)false(.*)/\1TRUE\2/i' cpxtyp.asm > cpvjai.asm
+#	sed -r -e 's/(jai165[ \t]+equ[ \t]+)false(.*)/\1TRUE\2/i' -i cpvjai.asm
 	$(AS) --listing cpvjai.asm
 	rm cpvjai.asm

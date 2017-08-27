@@ -178,6 +178,9 @@ acedtr  EQU     00000001b ; data terminal ready
 aceloo  EQU     00010000b ; loopback mode
 acedr   EQU     00000001b ; data ready
 acethe  EQU     00100000b ; transmitter holding register empty
+IF jai165
+acefif	EQU	00000111b ; enable and clear FIFO on 16550
+ENDIF;jai165
 
 ;mnport EQU     330O    ;Modem data port
 ; [35a: majoc 870305] Shifted up above joint IF, to save nesting.
@@ -264,6 +267,13 @@ IF heath OR scntpr OR jair
         in      mnport+acemcr
         ori     acedtr          ; raise DTR (just in case)
         out     mnport+acemcr
+
+IF jai165
+;       Enable FIFO on 16550
+	mvi	a,acefif
+	out	mnport+aceiir
+ENDIF;jai165
+	
         call    mdmonl          ; and put the ACE back on line
         ret
 
@@ -275,9 +285,6 @@ mdmofl:
         out     mnport+aceier   ; and disable ACE interrupts
         in      mnport+acemcr   ; now put the ACE in loopback mode
         ori     aceloo
-IF jair;Don't know why but without the NOP the OUT hangs
-	nop
-ENDIF;jair
         out     mnport+acemcr
         ret
 

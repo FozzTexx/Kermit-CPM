@@ -312,6 +312,7 @@ genie	EQU	FALSE		;Eaca Genie III
 h8quad	EQU	FALSE		;[24] Entry for heath-8.  NOT same as H-89
 heath   EQU     FALSE		;For Heath/Zenith H89.
 jair    EQU     FALSE           ;For JAIR 8080 (terminal required)
+jai165  EQU     FALSE           ;Enable FIFO if using 16550 instead of 8250
 kpII	EQU	FALSE		;Kaypro-II
 horizon	EQU	FALSE		;[10] North Star Horizon (mother-board)
 				; (terminal required)
